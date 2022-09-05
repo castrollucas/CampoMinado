@@ -1,5 +1,6 @@
 package br.com.dec.cm.modelo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -110,6 +111,95 @@ public class CampoTeste {
 		
 		assertTrue(campo22.isAberto() && !campo11.isAberto());
 	}
+	
+	@Test
+	void testeIsFechado() {
+		assertTrue(campo.isFechado());
+	}
+	
+	@Test
+	void testeGetLinha() {
+		assertTrue(campo.getLinha() == 3);
+	}
+	
+	@Test
+	void testeGetColuna() {
+		assertTrue(campo.getColuna() == 3);
+	}
+	
+	@Test
+	void testeObjetivoAlcancado1() {
+		campo.abrir();
+		assertTrue(campo.objetivoAlcancado());
+	}
+	
+	@Test
+	void testeObjetivoAlcancado2() {
+		campo.minar();
+		campo.alternarMarcacao();
+		assertTrue(campo.objetivoAlcancado());
+	}
+	
+	@Test
+	void testeMinasNaVizinhanca() {
+		Campo campo22 = new Campo(2 ,2);
+		Campo campo23 = new Campo(2 ,3);
+		Campo campo24 = new Campo(2 ,4);
+		
+		campo22.minar();
+		campo23.minar();
+		campo24.minar();
+		
+		campo.adicionarVizinho(campo22);
+		campo.adicionarVizinho(campo23);
+		campo.adicionarVizinho(campo24);
+		
+		assertTrue(campo.minasNaVizinhanca() == 3);
+		
+	}
+	
+
+	@Test
+	void testeReiniciar() {
+		campo.reiniciar();
+		assertFalse(campo.isAberto() && campo.isMinado() && campo.isMarcado());
+	}
+	
+	@Test
+	void testeToString() {
+		campo.alternarMarcacao();
+		assertEquals(campo.toString(), "x");
+		
+		campo.alternarMarcacao();
+		campo.abrir();
+		assertEquals(campo.toString(), " ");
+		
+		campo.minar();
+		campo.abrir();
+		assertEquals(campo.toString(), "*");
+		
+		campo.reiniciar();
+		Campo campo22 = new Campo(2 ,2);
+		Campo campo23 = new Campo(2 ,3);
+		Campo campo24 = new Campo(2 ,4);
+		
+		campo22.minar();
+		campo23.minar();
+		campo24.minar();
+		
+		campo.adicionarVizinho(campo22);
+		campo.adicionarVizinho(campo23);
+		campo.adicionarVizinho(campo24);
+		campo.abrir();
+		
+		assertEquals(campo.toString(), "3");
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
